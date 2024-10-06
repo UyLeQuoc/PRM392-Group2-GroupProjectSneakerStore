@@ -57,12 +57,9 @@ public class UserDBHelper extends SQLiteOpenHelper {
                 COLUMN_ROLE + " INTEGER)";
         db.execSQL(CREATE_USERS_TABLE);
 
-        if (!hasUsers()) {
-            seedUsers(db);
-        }
+        seedUsers(db);
     }
 
-    // Seed dữ liệu mẫu cho từng role
     private void seedUsers(SQLiteDatabase db) {
         addUserSeed(db, "Admin", "admin@gmail.com", "123456", "0123456789", "Admin Address", 1, true);
         addUserSeed(db, "Store Owner", "storeowner@gmail.com", "123456", "0123456789", "Store Owner Address", 2, true);
@@ -70,7 +67,6 @@ public class UserDBHelper extends SQLiteOpenHelper {
         addUserSeed(db, "Customer", "customer@gmail.com", "123456", "0123456789", "Customer Address", 4, true);
     }
 
-    // Phương thức seed một user vào DB
     private void addUserSeed(SQLiteDatabase db, String name, String email, String password, String phone, String address, int role, boolean isActive) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, name);
@@ -83,17 +79,6 @@ public class UserDBHelper extends SQLiteOpenHelper {
 
         db.insert(TABLE_USERS, null, values);
     }
-
-    public boolean hasUsers() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT COUNT(*) FROM " + TABLE_USERS;
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        int count = cursor.getInt(0);
-        cursor.close();
-        return count > 0;
-    }
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
