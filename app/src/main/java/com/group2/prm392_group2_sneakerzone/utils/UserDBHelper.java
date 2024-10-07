@@ -14,7 +14,7 @@ import java.util.List;
 public class UserDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SneakerZoneDB";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Tăng version để đồng bộ với ProductDBHelper
 
     // Singleton instance
     private static UserDBHelper instance;
@@ -46,7 +46,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Tạo bảng Users
-        String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + " (" +
+        String CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (" +
                 COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_EMAIL + " TEXT, " +
@@ -82,8 +82,9 @@ public class UserDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Xóa bảng cũ khi nâng cấp phiên bản cơ sở dữ liệu
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        onCreate(db);
+        onCreate(db); // Tạo lại bảng mới
     }
 
     // Thêm User

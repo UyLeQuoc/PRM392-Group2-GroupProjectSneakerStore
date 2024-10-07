@@ -31,6 +31,9 @@
             android:name=".controller.AdminHomePage"
             android:exported="false" />
         <activity
+            android:name=".controller.ProductManagePage"
+            android:exported="false" />
+        <activity
             android:name=".controller.LoginActivity"
             android:exported="true">
             <intent-filter>
